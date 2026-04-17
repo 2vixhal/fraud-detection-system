@@ -348,7 +348,7 @@ export default function Home() {
               {!result && !error && (
                 <div className="text-center py-12 text-gray-400">
                   <Shield className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                  <p>Enter transaction details and click "Check for Fraud" to see results</p>
+                  <p>Enter transaction details and click &quot;Check for Fraud&quot; to see results</p>
                 </div>
               )}
 
