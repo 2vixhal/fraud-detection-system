@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+*.egg
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Environment variables
+.env
+.env.local
+backend/.env
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Next.js
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/node_modules/
+frontend/.env.local
+frontend/.env.production.local
+frontend/.vercel
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# ML Models
+results/models/
+*.pkl
+*.joblib
+*.h5
+
+# Data
+data/*.csv
+!data/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Results (optional - keep structure but not files)
+results/plots/*.png
+results/tables/*.csv
+results/tables/*.json
+!results/plots/.gitkeep
+!results/tables/.gitkeep
