@@ -81,7 +81,7 @@ Get your fraud detection system up and running in 10 minutes!
    cd "/Users/vishal.suthar/Downloads/BE Project"
    
    # Add your GitHub repository
-   git remote add origin https://github.com/YOUR_USERNAME/fraud-detection-system.git
+   git remote add origin https://github.com/2vixhal/fraud-detection-system.git
    
    # Push code
    git push -u origin main

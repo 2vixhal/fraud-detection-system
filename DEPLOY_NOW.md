@@ -92,7 +92,7 @@ Scroll down to **"Environment Variables"** section:
 2. **Key**: `MONGODB_URL`
 3. **Value**: 
    ```
-   mongodb+srv://user:3110200322224%40Ait@cluster0.av9o4oo.mongodb.net/fraud_detection?appName=Cluster0
+   YOUR_MONGODB_CONNECTION_STRING_HERE
    ```
 4. Click **"Add"**
 
@@ -244,7 +244,7 @@ Fill this in as you complete each step:
 
 ```
 ✅ MongoDB Connection:
-   mongodb+srv://user:3110200322224%40Ait@cluster0.av9o4oo.mongodb.net/fraud_detection?appName=Cluster0
+   YOUR_MONGODB_CONNECTION_STRING_HERE
 
 ✅ GitHub Repository:
    https://github.com/_____________/fraud-detection-system
