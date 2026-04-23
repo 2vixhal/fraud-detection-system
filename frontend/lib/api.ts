@@ -7,6 +7,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 60000,
 });
 
 export interface TransactionInput {
@@ -22,11 +23,14 @@ export interface TransactionInput {
   customer_state: string;
   transaction_city: string;
   transaction_state: string;
+  country?: string;
+  custom_city?: string;
 }
 
 export interface ModelPrediction {
   score: number;
   decision: string;
+  processing_time?: number;
 }
 
 export interface RiskFactor {
@@ -46,6 +50,7 @@ export interface PredictionResponse {
   };
   risk_factors: RiskFactor[];
   feature_values: Record<string, number>;
+  analysis_time?: number;
 }
 
 export const predictFraud = async (transaction: TransactionInput): Promise<PredictionResponse> => {

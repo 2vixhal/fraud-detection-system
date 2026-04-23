@@ -10,7 +10,9 @@ from __future__ import annotations
 
 import time
 import warnings
+from pathlib import Path
 import numpy as np
+import joblib
 from sklearn.svm import SVC
 
 from qiskit.circuit.library import ZZFeatureMap
@@ -28,20 +30,24 @@ def _sanitize_kernel(K: np.ndarray) -> np.ndarray:
     return K
 
 
+def _build_feature_map(n_features: int, reps: int):
+    if n_features < 2:
+        from qiskit.circuit.library import ZFeatureMap
+        return ZFeatureMap(feature_dimension=n_features, reps=reps)
+    return ZZFeatureMap(
+        feature_dimension=n_features,
+        reps=reps,
+        entanglement="linear",
+    )
+
+
 class QSVMModel:
     """Quantum Support Vector Machine backed by a ZZFeatureMap kernel."""
 
     def __init__(self, n_features: int, reps: int = config.QSVM_REPS):
         self.n_features = n_features
-        if n_features < 2:
-            from qiskit.circuit.library import ZFeatureMap
-            self.feature_map = ZFeatureMap(feature_dimension=n_features, reps=reps)
-        else:
-            self.feature_map = ZZFeatureMap(
-                feature_dimension=n_features,
-                reps=reps,
-                entanglement="linear",
-            )
+        self.reps = reps
+        self.feature_map = _build_feature_map(n_features, reps)
         self.kernel = FidelityQuantumKernel(feature_map=self.feature_map)
         self.svc = SVC(kernel="precomputed", probability=True)
         self.X_train: np.ndarray | None = None
@@ -60,20 +66,54 @@ class QSVMModel:
               f"{self.n_features} features in {self.train_time:.2f}s")
         return self
 
-    def predict(self, X: np.ndarray) -> np.ndarray:
-        t0 = time.time()
+    def _test_kernel(self, X: np.ndarray) -> np.ndarray:
+        """Compute kernel matrix between X and the training set (expensive)."""
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", RuntimeWarning)
-            kernel_matrix = _sanitize_kernel(self.kernel.evaluate(X, self.X_train))
-        preds = self.svc.predict(kernel_matrix)
+            return _sanitize_kernel(self.kernel.evaluate(X, self.X_train))
+
+    def predict(self, X: np.ndarray) -> np.ndarray:
+        t0 = time.time()
+        preds = self.svc.predict(self._test_kernel(X))
         self.predict_time = time.time() - t0
         return preds
 
     def predict_proba(self, X: np.ndarray) -> np.ndarray:
         t0 = time.time()
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", RuntimeWarning)
-            kernel_matrix = _sanitize_kernel(self.kernel.evaluate(X, self.X_train))
-        proba = self.svc.predict_proba(kernel_matrix)[:, 1]
+        proba = self.svc.predict_proba(self._test_kernel(X))[:, 1]
         self.predict_time = time.time() - t0
         return proba
+
+    def evaluate(self, X: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        """Return (predictions, probabilities) computing the kernel only once."""
+        t0 = time.time()
+        K = self._test_kernel(X)
+        preds = self.svc.predict(K)
+        proba = self.svc.predict_proba(K)[:, 1]
+        self.predict_time = time.time() - t0
+        return preds, proba
+
+    def save(self, directory: Path) -> None:
+        """Persist QSVM to *directory* (SVC, training data, and config)."""
+        directory = Path(directory)
+        directory.mkdir(parents=True, exist_ok=True)
+        joblib.dump(self.svc, directory / "qsvm_svc.pkl")
+        np.save(directory / "qsvm_X_train.npy", self.X_train)
+        joblib.dump(
+            {"n_features": self.n_features, "reps": self.reps},
+            directory / "qsvm_meta.pkl",
+        )
+        print(f"[QSVM] Saved to {directory}")
+
+    @classmethod
+    def load(cls, directory: Path) -> "QSVMModel":
+        """Reconstruct a trained QSVM from saved artefacts."""
+        directory = Path(directory)
+        meta = joblib.load(directory / "qsvm_meta.pkl")
+        model = cls(n_features=meta["n_features"], reps=meta["reps"])
+        model.svc = joblib.load(directory / "qsvm_svc.pkl")
+        model.X_train = np.load(directory / "qsvm_X_train.npy")
+        print(f"[QSVM] Loaded from {directory}  "
+              f"({model.X_train.shape[0]} support vectors, "
+              f"{model.n_features} features)")
+        return model

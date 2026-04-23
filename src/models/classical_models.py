@@ -4,7 +4,9 @@ Classical ML models: XGBoost and Random Forest classifiers.
 from __future__ import annotations
 
 import time
+from pathlib import Path
 import numpy as np
+import joblib
 from sklearn.ensemble import RandomForestClassifier
 from xgboost import XGBClassifier
 
@@ -45,3 +47,19 @@ class ClassicalModel:
         proba = self.model.predict_proba(X)[:, 1]
         self.predict_time = time.time() - t0
         return proba
+
+    def save(self, path: Path) -> None:
+        path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        joblib.dump(self.model, path)
+        print(f"[{self.model_type}] Saved to {path}")
+
+    @classmethod
+    def load(cls, path: Path, model_type: str = "xgboost") -> "ClassicalModel":
+        wrapper = cls.__new__(cls)
+        wrapper.model = joblib.load(path)
+        wrapper.model_type = model_type
+        wrapper.train_time = 0.0
+        wrapper.predict_time = 0.0
+        print(f"[{model_type}] Loaded from {path}")
+        return wrapper

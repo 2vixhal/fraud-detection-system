@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Quantum-Classical Fraud Detection",
+  title: "Quantum-Classical Fraud Detection System",
   description: "Real-time credit card fraud detection using hybrid quantum-classical machine learning",
 };
 
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>{children}</body>
     </html>
   );
