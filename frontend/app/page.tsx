@@ -858,11 +858,15 @@ export default function Home() {
             <span className="text-border">|</span>
             <span>Quantum-Classical Hybrid ML</span>
             <span className="text-border">|</span>
-            <span>BE Project 2025</span>
+            <span>BE Project 2026</span>
           </div>
           <p className="text-[10px] text-muted-foreground">
             Built with Next.js, FastAPI, Qiskit, XGBoost, and Quantum SVM Ensemble
           </p>
+          <a href="/team" className="inline-flex items-center gap-1.5 text-[11px] text-primary hover:underline mt-1">
+            <User className="w-3 h-3" />
+            Meet the Team
+          </a>
         </div>
       </div>
     </main>
