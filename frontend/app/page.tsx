@@ -289,13 +289,20 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <div className="hidden md:flex items-center gap-2 text-xs text-muted-foreground">
               <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
                 <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                 System Online
               </div>
             </div>
+            <a
+              href="/team"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border border-border/50 bg-background hover:bg-accent hover:text-accent-foreground transition-colors"
+            >
+              <User className="w-3.5 h-3.5" />
+              Team
+            </a>
             <Button
               variant="outline"
               size="icon"
@@ -863,10 +870,6 @@ export default function Home() {
           <p className="text-[10px] text-muted-foreground">
             Built with Next.js, FastAPI, Qiskit, XGBoost, and Quantum SVM Ensemble
           </p>
-          <a href="/team" className="inline-flex items-center gap-1.5 text-[11px] text-primary hover:underline mt-1">
-            <User className="w-3 h-3" />
-            Meet the Team
-          </a>
         </div>
       </div>
     </main>

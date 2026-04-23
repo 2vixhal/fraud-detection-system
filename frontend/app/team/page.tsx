@@ -7,25 +7,25 @@ import Link from 'next/link';
 const team = [
   {
     name: 'Vishal Suthar',
-    role: 'Backend Developer',
-    icon: <Code2 className="w-6 h-6" />,
+    role: 'Frontend Developer',
+    icon: <Layout className="w-6 h-6" />,
     color: 'from-blue-500 to-cyan-500',
     border: 'border-blue-500/30',
     glow: 'shadow-blue-500/20',
     bg: 'bg-blue-500/10',
     text: 'text-blue-400',
-    description: 'FastAPI, Database Architecture & System Integration',
+    description: 'Next.js, React & UI/UX Design',
   },
   {
     name: 'Harsh Nayan',
-    role: 'Frontend Developer',
-    icon: <Layout className="w-6 h-6" />,
+    role: 'Backend Developer',
+    icon: <Code2 className="w-6 h-6" />,
     color: 'from-purple-500 to-pink-500',
     border: 'border-purple-500/30',
     glow: 'shadow-purple-500/20',
     bg: 'bg-purple-500/10',
     text: 'text-purple-400',
-    description: 'Next.js, React & UI/UX Design',
+    description: 'FastAPI, Database Architecture & System Integration',
   },
   {
     name: 'Devansh Singh',
@@ -40,14 +40,14 @@ const team = [
   },
   {
     name: 'Anuj Kumar',
-    role: 'Team Member',
+    role: 'Member',
     icon: <Users className="w-6 h-6" />,
     color: 'from-amber-500 to-orange-500',
     border: 'border-amber-500/30',
     glow: 'shadow-amber-500/20',
     bg: 'bg-amber-500/10',
     text: 'text-amber-400',
-    description: 'Research, Testing & Documentation',
+    description: '',
   },
 ];
 
@@ -119,7 +119,7 @@ export default function TeamPage() {
                 <div className="flex-1 min-w-0">
                   <h3 className="text-xl font-bold text-foreground">{member.name}</h3>
                   <p className={`text-sm font-semibold ${member.text} mt-0.5`}>{member.role}</p>
-                  <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{member.description}</p>
+                  {member.description && <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{member.description}</p>}
                 </div>
               </div>
             </div>
@@ -139,9 +139,15 @@ export default function TeamPage() {
               Under the Guidance of
             </p>
             <h2 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
-              Ms. Sushma A Shirke
+              Prof. Sushma A Shirke
             </h2>
             <p className="text-sm text-muted-foreground mt-2">Project Guide & Mentor</p>
+            <p className="text-sm text-muted-foreground mt-4 max-w-md mx-auto leading-relaxed italic">
+              We sincerely thank Prof. Sushma A Shirke for her constant guidance,
+              encouragement, and invaluable support throughout this project.
+              Her mentorship helped us navigate every challenge and shaped this
+              work into what it is today. We are truly grateful.
+            </p>
           </div>
         </div>
 
